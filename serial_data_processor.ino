@@ -41,6 +41,7 @@ void processData(){
       temp_ctrl_fans_on = true;
     }
     else if (integerFromLCD == 0){
+      shutdown:
       Serial.println("Temperature control ended!");
       Serial.println();
       dtcwPID.SetMode(MANUAL);
@@ -161,6 +162,7 @@ else if (strcmp(commandFromLCD, "H") == 0 && integerFromLCD == 1){
   send_serial_command("H", 2, NULL, true);
   avg_temp_send_en = false;
   three_temp_send_en = false;
+  goto shutdown;
 }
 
 
