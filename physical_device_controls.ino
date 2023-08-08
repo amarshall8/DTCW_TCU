@@ -10,33 +10,32 @@ void hbInit()
 
 // Half-Bridge control function
 // POL = false for positive output (hot), true for negative output (cold)
-void hbControl(double PWM, bool POL)
+void hbControl(double PWM)
 {
-  if (PWM > 0){
-    if(POL == false)
-    {
-      // Disable negative side of H-Bridge
-      digitalWrite(NEG_EN, LOW);
-      digitalWrite(NEG_PWM, LOW);
-      // Enable and set value for positive side of H-Bridge
-      digitalWrite(POS_EN, HIGH);
-      analogWrite(POS_PWM, PWM);
-    }
-    else
-    {
-      // Disable positive side of H-Bridge
-      digitalWrite(POS_EN, LOW);
-      digitalWrite(POS_PWM, LOW);
-      // Enable and set value for negative side of H-Bridge
-      digitalWrite(NEG_EN, HIGH);
-      analogWrite(NEG_PWM, PWM);
-    }
-  }
-  else{
+  if (PWM == 0)
+  {
     digitalWrite(NEG_EN, LOW);
     digitalWrite(POS_EN, LOW);
     digitalWrite(NEG_PWM, LOW);
     digitalWrite(POS_PWM, LOW);
+  }
+  else if(PWM > 0)
+  {
+    // Disable negative side of H-Bridge
+    digitalWrite(NEG_EN, LOW);
+    digitalWrite(NEG_PWM, LOW);
+    // Enable and set value for positive side of H-Bridge
+    digitalWrite(POS_EN, HIGH);
+    analogWrite(POS_PWM, PWM);
+  }
+  else
+  {
+    // Disable positive side of H-Bridge
+    digitalWrite(POS_EN, LOW);
+    digitalWrite(POS_PWM, LOW);
+    // Enable and set value for negative side of H-Bridge
+    digitalWrite(NEG_EN, HIGH);
+    analogWrite(NEG_PWM, abs(PWM));
   }
 }
 

@@ -113,6 +113,8 @@ void setup() {
     sensors.setResolution(Temp3Addr, TEMP_PRECISION);
     sensors.setWaitForConversion(false);
 
+    dtcwPID.SetOutputLimits(-255, 255);
+
     tempcalInit();
     pidRead();
 
@@ -125,17 +127,9 @@ void loop() {
     recvWithStartEndMarkers();
     readTemps();
     if (pid_enable == true){
-      if (Setpoint < tempAvg){
-        dtcwPID.SetControllerDirection(REVERSE);
-        dtcwPID.Compute();
-        hbControl(Output, true);
-        //Serial.println(Output * -1);
-      }
-      else{
-        dtcwPID.SetControllerDirection(DIRECT);
-        dtcwPID.Compute();
-        hbControl(Output, false);
-        //Serial.println(Output);
-      }
+      dtcwPID.SetControllerDirection(REVERSE);
+      dtcwPID.Compute();
+      hbControl(Output);
+      Serial.println(Output);
     }
 }

@@ -33,6 +33,7 @@ void processData(){
       Serial.print(" Setpoint value is: ");
       Serial.println(floatFromLCD,1);
       Serial.println();
+      dtcwPID.SetMode(MANUAL);
       Output = 0;
       Setpoint = floatFromLCD;
       dtcwPID.SetMode(AUTOMATIC);
@@ -44,9 +45,9 @@ void processData(){
       Serial.println();
       dtcwPID.SetMode(MANUAL);
       Output = 0;
-      Setpoint = 25.0;
       pid_enable = false;
-      hbControl(0, false);
+      Setpoint = 25.0;
+      hbControl(0);
       temp_ctrl_fans_on = false;
     }
   }
