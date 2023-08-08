@@ -154,6 +154,10 @@ void processData(){
     fanControl(integerFromLCD);
   }
 
+  else if (strcmp(commandFromLCD, "DC") == 0){
+    hbControl(integerFromLCD);
+  }
+
 /*/////////////////////////////
           Heartbeat
 /////////////////////////////*/
