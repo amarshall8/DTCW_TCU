@@ -162,12 +162,12 @@ void processData(){
           Heartbeat
 /////////////////////////////*/
 
-else if (strcmp(commandFromLCD, "H") == 0 && integerFromLCD == 1){
-  send_serial_command("H", 2, NULL, true);
-  avg_temp_send_en = false;
-  three_temp_send_en = false;
-  goto shutdown;
-}
+  else if (strcmp(commandFromLCD, "H") == 0 && integerFromLCD == 1){
+    send_serial_command("H", 2, NULL, true);
+    avg_temp_send_en = false;
+    three_temp_send_en = false;
+    goto shutdown;
+  }
 
 
 /*/////////////////////////////
