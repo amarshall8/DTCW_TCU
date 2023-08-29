@@ -7,7 +7,7 @@ void readTemps(){
     Temp2 = sensors.getTempC(Temp2Addr) + Temp2Cal;
     Temp3 = sensors.getTempC(Temp3Addr) + Temp3Cal; 
     sensors.requestTemperatures();
-    tempAvg = (Temp1 + Temp2 + Temp3)/3.0;
+    tempAvg = (Temp1 + Temp2)/2.0;
     if (avg_temp_send_en == true){
       send_serial_command("T", 4, tempAvg, true);
       Serial.print("Current Average Temperature: ");
