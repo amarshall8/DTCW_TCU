@@ -22,19 +22,19 @@ void hbControl(double PWM)
   else if(PWM > 0)
   {
     // Disable negative side of H-Bridge
-    digitalWrite(NEG_EN, LOW);
+    digitalWrite(NEG_EN, HIGH);
+    digitalWrite(POS_EN, HIGH);
     digitalWrite(NEG_PWM, LOW);
     // Enable and set value for positive side of H-Bridge
-    digitalWrite(POS_EN, HIGH);
     analogWrite(POS_PWM, PWM);
   }
   else
   {
     // Disable positive side of H-Bridge
-    digitalWrite(POS_EN, LOW);
+    digitalWrite(POS_EN, HIGH);
+    digitalWrite(NEG_EN, HIGH);
     digitalWrite(POS_PWM, LOW);
     // Enable and set value for negative side of H-Bridge
-    digitalWrite(NEG_EN, HIGH);
     analogWrite(NEG_PWM, abs(PWM));
   }
 }

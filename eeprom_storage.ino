@@ -3,27 +3,24 @@ void tempcalInit()
 {
   //default temp cal values:
   if (EEPROM.read(tempCalState) != 1) { //Check if there is a eeprom cal value set
-    EEPROM.updateFloat(T1CalAddr, Temp1Cal); //Set Cal1 Value
-    EEPROM.updateFloat(T2CalAddr, Temp2Cal); //Set Cal2 Value
-    EEPROM.updateFloat(T3CalAddr, Temp3Cal); //Set Cal3 Value
+    EEPROM.updateFloat(TN_bottomCalAddr, TempN_bottomCal); //Set Cal1 Value
+    EEPROM.updateFloat(TN_topCalAddr, TempN_topCal); //Set Cal2 Value
     EEPROM.update(tempCalState, 1); //if not, note that eeprom cal has been set (1 at position 0)
     Serial.println("Wrote default calibration values!");
     Serial.println();
   }
   else { //Read stored values if there exists previous cal
-    Temp1Cal = EEPROM.readFloat(T1CalAddr);
-    Temp2Cal = EEPROM.readFloat(T2CalAddr);
-    Temp3Cal = EEPROM.readFloat(T3CalAddr);
+    TempN_bottomCal = EEPROM.readFloat(TN_bottomCalAddr);
+    TempN_topCal = EEPROM.readFloat(TN_topCalAddr);
     Serial.println("Calibration values loaded!");
     Serial.println();
   }
 }
 
-void tempcalWrite(float T1, float T2, float T3)
+void tempcalWrite(float TNB, float TNT)
 {
-  EEPROM.updateFloat(T1CalAddr, T1);
-  EEPROM.updateFloat(T2CalAddr, T2);
-  EEPROM.updateFloat(T3CalAddr, T3);
+  EEPROM.updateFloat(TN_bottomCalAddr, TNB);
+  EEPROM.updateFloat(TN_topCalAddr, TNT);
   Serial.println("Updated Calibration Values!");
   Serial.println();
 }

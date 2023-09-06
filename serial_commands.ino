@@ -10,7 +10,8 @@ I     -> Updates Integral parameter for PID and saves it on temp control arduino
 D     -> Updates Derivative parameter for PID and saves it on temp control arduino if int = 1
 T1CAL -> Updates float offset for Upper temperature sensor 1 if int = 1
 T2CAL -> Updates float offset for Upper temperature sensor 2 if int = 1
-T3CAL -> Updates float offset for Lower temperature sensor 1 if int = 1
+T3CAL -> Updates float offset for Lower temperature sensor 3 if int = 1
+TNCAL -> Updates float offset for NTC Thermistor if int = 1
 CRCV  -> Requests current calibration values
 PRCV  -> Requests current PID values
 F     -> Manual fan control, int sets speed value from 0-255 scaled by 0-100 on keypad input
@@ -24,8 +25,9 @@ P     -> Used to update Proportional menu item if int = 0
 I     -> Used to update Integral menu item if int = 0
 D     -> Used to update Derivative menu item if int = 0
 T1CAL -> Used to update Temperature sensor 1 calibration menu item if int = 0
-T2CAL -> Used to update Temperature sensor 1 calibration menu item if int = 0
-T3CAL -> Used to update Temperature sensor 1 calibration menu item if int = 0
+T2CAL -> Used to update Temperature sensor 2 calibration menu item if int = 0
+T3CAL -> Used to update Temperature sensor 3 calibration menu item if int = 0
+TNCAL -> Used to update NTC Thermistor calibration menu item if int = 0
 CALF  -> Calibration sending done (int = 0)
 PIDF  -> PID sending done (int = 0)
 TCUR  -> Float val of current temperature (average of cold plate sensors)

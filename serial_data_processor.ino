@@ -14,12 +14,12 @@ void processData(){
       Serial.println("Temp monitoring offline!");
       Serial.println();
       avg_temp_send_en = false;
-      three_temp_send_en = false;
+      two_temp_send_en = false;
     }
     else if (integerFromLCD = 2){
       Serial.println("Sending all sensor temps for diagnostics");
       Serial.println();
-      three_temp_send_en = true;
+      two_temp_send_en = true;
     }
   }
 
@@ -38,7 +38,6 @@ void processData(){
       Setpoint = floatFromLCD;
       dtcwPID.SetMode(AUTOMATIC);
       pid_enable = true;
-      temp_ctrl_fans_on = true;
     }
     else if (integerFromLCD == 0){
       shutdown:
@@ -49,7 +48,6 @@ void processData(){
       pid_enable = false;
       Setpoint = 25.0;
       hbControl(0);
-      temp_ctrl_fans_on = false;
     }
   }
 
@@ -59,18 +57,15 @@ void processData(){
 
   else if (strcmp(commandFromLCD, "CRCV") == 0 && integerFromLCD == 1){
     Serial.println("Current calibration values are:");
-    Serial.print("T1: ");
-    Serial.print(Temp1Cal);
-    Serial.print(" T2 ");
-    Serial.print(Temp2Cal);
-    Serial.print(" T3 ");
-    Serial.println(Temp3Cal);
+    Serial.print("N_bottom: ");
+    Serial.print(TempN_bottomCal);
+    Serial.print(" N_top: ");
+    Serial.println(TempN_topCal);
     Serial.println();
     Serial.println("Sending calibration values over to LCD!");
     Serial.println();
-    send_serial_command("T1CAL", 0, Temp1Cal, true);
-    send_serial_command("T2CAL", 0, Temp2Cal, true);
-    send_serial_command("T3CAL", 0, Temp3Cal, true);
+    send_serial_command("TNBCAL", 0, TempN_bottomCal, true);
+    send_serial_command("TNTCAL", 0, TempN_topCal, true);
     send_serial_command("CALF", 0, NULL, true);
   }
 
@@ -78,22 +73,17 @@ void processData(){
     Calibration Data Recv
 /////////////////////////////*/
 
-  else if (strcmp(commandFromLCD, "T1CAL") == 0 && integerFromLCD == 1){
-    Temp1Cal = floatFromLCD;
-    Serial.print("Temperature Sensor 1 calibration value is: ");
-    Serial.println(Temp1Cal);
+  else if (strcmp(commandFromLCD, "TNBCAL") == 0 && integerFromLCD == 1){
+    TempN_bottomCal = floatFromLCD;
+    Serial.print("Bottom NTC calibration value is: ");
+    Serial.println(TempN_bottomCal);
     Serial.println();
   }
-  else if (strcmp(commandFromLCD, "T2CAL") == 0 && integerFromLCD == 1){
-    Temp2Cal = floatFromLCD;
-    Serial.print("Temperature Sensor 2 calibration value is: ");
-    Serial.println(Temp2Cal);
-    Serial.println();
-  }
-  else if (strcmp(commandFromLCD, "T3CAL") == 0 && integerFromLCD == 1){
-    Temp3Cal = floatFromLCD;
-    Serial.print("Temperature Sensor 3 calibration value is: ");
-    Serial.println(Temp3Cal);
+
+  else if (strcmp(commandFromLCD, "TNTCAL") == 0 && integerFromLCD == 1){
+    TempN_topCal = floatFromLCD;
+    Serial.print("Top NTC calibration value is: ");
+    Serial.println(TempN_topCal);
     Serial.println();
   }
 
@@ -151,11 +141,19 @@ void processData(){
       Fan Manual Control
 /////////////////////////////*/
   else if (strcmp(commandFromLCD, "F") == 0){
+    if(integerFromLCD != 0){
+      fan_manual_control = true;
+    }
+    else{
+      fan_manual_control = false;
+    }
     fanControl(integerFromLCD);
   }
 
   else if (strcmp(commandFromLCD, "DC") == 0){
+    fanControl(abs(integerFromLCD));
     hbControl(integerFromLCD);
+    fan_manual_control = true;
   }
 
 /*/////////////////////////////
@@ -165,7 +163,7 @@ void processData(){
   else if (strcmp(commandFromLCD, "H") == 0 && integerFromLCD == 1){
     send_serial_command("H", 2, NULL, true);
     avg_temp_send_en = false;
-    three_temp_send_en = false;
+    two_temp_send_en = false;
     goto shutdown;
   }
 
@@ -175,7 +173,7 @@ void processData(){
 /////////////////////////////*/
 
   else if (strcmp(commandFromLCD, "S") == 0 && integerFromLCD == 1){
-    tempcalWrite(Temp1Cal, Temp2Cal, Temp3Cal);
+    tempcalWrite(TempN_bottomCal, TempN_topCal);
     pidWrite(Kp, Ki, Kd);
   }
 }
